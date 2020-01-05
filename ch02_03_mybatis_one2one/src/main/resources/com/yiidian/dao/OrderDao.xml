@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   namespace: 用于指定该映射文件需要映射的Dao接口
+-->
+<mapper namespace="com.yiidian.dao.OrderDao">
+
+    <!--一对多映射-->
+    <resultMap id="OrderResultMap" type="com.yiidian.domain.Order">
+        <id property="id" column="oid"/>
+        <result property="orderno" column="orderno"/>
+        <result property="amount" column="amount"/>
+        <!--关联查询订单所属的用户-->
+        <association property="user" column="id" javaType="com.yiidian.domain.User">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+        </association>
+    </resultMap>
+
+    <select id="findAllOrders" resultMap="OrderResultMap">
+        SELECT
+          o.id oid,
+          o.orderno orderno,
+          o.amount amount,
+          u.*
+        FROM t_order o
+          LEFT JOIN t_user u
+            ON o.user_id = u.id
+    </select>
+</mapper>

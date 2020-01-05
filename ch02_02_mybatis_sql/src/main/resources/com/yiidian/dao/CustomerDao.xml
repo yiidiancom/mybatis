@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   namespace: 用于指定该映射文件需要映射的Dao接口
+-->
+<mapper namespace="com.yiidian.dao.CustomerDao">
+
+    <!--if标签的使用-->
+    <select id="queryByNameAndTelephone" parameterType="com.yiidian.domain.Customer" resultType="com.yiidian.domain.Customer">
+        SELECT * FROM t_customer
+        WHERE 1=1
+        <if test="name!=null and name!='' ">
+            AND NAME LIKE #{name}
+        </if>
+        <if test="telephone!=null and telephone!='' ">
+            AND telephone LIKE #{telephone}
+        </if>
+    </select>
+
+    <!--choose标签的使用-->
+    <select id="queryByNameAndTelephone2" parameterType="com.yiidian.domain.Customer" resultType="com.yiidian.domain.Customer">
+        SELECT * FROM t_customer
+        <where>
+            <choose>
+                <when test="name!=null and name!='' ">
+                    AND NAME LIKE #{name}
+                </when>
+                <when test="telephone!=null and telephone!='' ">
+                    AND telephone LIKE #{telephone}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--where标签的使用-->
+    <select id="queryByNameAndTelephone3" parameterType="com.yiidian.domain.Customer" resultType="com.yiidian.domain.Customer">
+        SELECT * FROM t_customer
+        <where>
+            <if test="name!=null and name!='' ">
+                AND NAME LIKE #{name}
+            </if>
+            <if test="telephone!=null and telephone!='' ">
+                AND telephone LIKE #{telephone}
+            </if>
+        </where>
+    </select>
+
+    <!--sql标签的使用-->
+    <sql id="customerField">
+        select id,name,gender,telephone from t_customer
+    </sql>
+
+    <select id="queryByNameAndTelephone4" parameterType="com.yiidian.domain.Customer" resultType="com.yiidian.domain.Customer">
+        <include refid="customerField"/>
+        <where>
+            <if test="name!=null and name!='' ">
+                AND NAME LIKE #{name}
+            </if>
+            <if test="telephone!=null and telephone!='' ">
+                AND telephone LIKE #{telephone}
+            </if>
+        </where>
+    </select>
+
+    <!--foreach标签的使用-->
+    <select id="deleteCustomerByIn" parameterType="integer">
+        DELETE FROM t_customer WHERE
+        <foreach collection="list" item="id" open="id IN(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

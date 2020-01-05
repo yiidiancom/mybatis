@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   namespace: 用于指定该映射文件需要映射的Dao接口
+-->
+<mapper namespace="com.yiidian.dao.CustomerDao">
+
+    <!--1.方式一：通过selectkey标签获取自增主键值-->
+    <insert id="save1" parameterType="customer">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_customer(NAME,gender,telephone) VALUES(#{name},#{gender},#{telephone})
+    </insert>
+
+    <!--2.方式二：通过useGeneratedKeys属性获取自增主键值-->
+    <insert id="save2" parameterType="com.yiidian.domain.Customer" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_customer(NAME,gender,telephone) VALUES(#{name},#{gender},#{telephone})
+    </insert>
+</mapper>

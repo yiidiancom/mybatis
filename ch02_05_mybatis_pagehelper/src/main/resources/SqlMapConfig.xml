@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <!--定义别名-->
+    <typeAliases>
+        <package name="com.yiidian.domain"/>
+    </typeAliases>
+
+    <!--
+        plugins在配置文件中的位置必须符合要求，否则会报错，顺序如下:
+        properties?, settings?,
+        typeAliases?, typeHandlers?,
+        objectFactory?,objectWrapperFactory?,
+        plugins?,
+        environments?, databaseIdProvider?, mappers?
+    -->
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--数据库方言-->
+            <property name="helperDialect" value="mysql"/>
+            <!--合理化分页-->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+    <!-- 1.数据库连接信息-->
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="jdbc"></transactionManager>
+            <dataSource type="pooled">
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEcndoing=utf8"/>
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!--2.关联Dao映射文件-->
+    <mappers>
+        <mapper resource="com/yiidian/dao/CustomerDao.xml"/>
+    </mappers>
+</configuration>

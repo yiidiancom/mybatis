@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   namespace: 用于指定该映射文件需要映射的Dao接口
+-->
+<mapper namespace="com.yiidian.dao.CustomerDao">
+
+    <!--查询所有-->
+    <select id="findAll" resultType="com.yiidian.domain.Customer">
+        select * from t_customer
+    </select>
+
+    <!--1.添加方法-->
+    <insert id="save" parameterType="com.yiidian.domain.Customer">
+        INSERT INTO t_customer(NAME,gender,telephone) VALUES(#{name},#{gender},#{telephone})
+    </insert>
+
+    <!--2.修改方法-->
+    <update id="update" parameterType="com.yiidian.domain.Customer">
+        UPDATE t_customer SET
+        NAME = #{name},
+        gender = #{gender},
+        telephone = #{telephone}
+        WHERE id = #{id}
+    </update>
+
+    <!--查询一个-->
+    <select id="findById" parameterType="integer" resultType="com.yiidian.domain.Customer">
+        select * from t_customer where id = #{id}
+    </select>
+
+    <!--条件查询-->
+    <select id="findByName" parameterType="string" resultType="com.yiidian.domain.Customer">
+        select * from t_customer where name like #{name}
+    </select>
+
+    <!--删除-->
+    <delete id="delete" parameterType="integer">
+        delete from t_customer where id = #{id}
+    </delete>
+</mapper>
